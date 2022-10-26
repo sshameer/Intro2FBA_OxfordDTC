@@ -1,0 +1,4 @@
+numpy
+cobrapy
+pandas
+matplotlib

@@ -17,7 +17,7 @@ def plotBoundary(Model, solutions,thresh=1e-5,displayModelID=0,solutionNames=[])
             print('Length of solutionNames does not match length of solutions.')
         plt.legend(['Solution '+str(x) for x in range(len(solutions))])
 
-def plotATPBudget(Model,solutions,thresh=1e-5,displayModelID=0):
+def plotATPBudget(Model,solutions,thresh=1e-5,displayModelID=0,solutionNames=[]):
     ATP_rxns=sorted([x for x in Model.metabolites.atp_c.reactions if any([abs(sol[x.id])>thresh for sol in solutions])],key=lambda x: abs(solutions[0][x.id]*x.get_coefficient('atp_c')),reverse=True)
     cm = plt.get_cmap('tab20')
     posSum=np.zeros(len(solutions))
@@ -47,9 +47,15 @@ def plotATPBudget(Model,solutions,thresh=1e-5,displayModelID=0):
         plt.legend(plts,[x.id for x in ATP_rxns],bbox_to_anchor=(1,1))
     else:
         plt.legend(plts,[x.name for x in ATP_rxns],bbox_to_anchor=(1,1))
+    if solutionNames and len(solutionNames)==len(solutions):
+        plt.xticks(range(len(solutionNames)),[x for x in solutionNames],rotation=90)
+    else:
+        if solutionNames and len(solutionNames)!=len(solutions):
+            print('Length of solutionNames does not match length of solutions.')
     plt.show()    
 
-def plotNADBudget(Model,solutions,thresh=1e-5,displayModelID=0):
+
+def plotNADBudget(Model,solutions,thresh=1e-5,displayModelID=0,solutionNames=[]):
     NADH_rxns = list(Model.metabolites.nadh_c.reactions)
     NADPH_rxns = list(Model.metabolites.nadph_c.reactions)
     nadh = Model.metabolites.nadh_c
@@ -90,6 +96,11 @@ def plotNADBudget(Model,solutions,thresh=1e-5,displayModelID=0):
         plt.legend(plts,[x.id for x in NAD_rxns],bbox_to_anchor=(1,1))
     else:
         plt.legend(plts,[x.name for x in NAD_rxns],bbox_to_anchor=(1,1))
+    if solutionNames and len(solutionNames)==len(solutions):
+        plt.xticks(range(len(solutionNames)),[x for x in solutionNames],rotation=90)
+    else:
+        if solutionNames and len(solutionNames)!=len(solutions):
+            print('Length of solutionNames does not match length of solutions.')
     plt.show()
 
     
